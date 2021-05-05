@@ -1,0 +1,14 @@
+#!/bin/bash
+
+templateloc=$1
+shopt -s nullglob extglob
+mkdir -p "$templateloc"
+cd "$templateloc"
+ls *.@(json|yml|yaml)
+if [ -n "$(echo *.@(json|yml|yaml))" ]; then
+  echo "linting: *.@(json|yml|yaml)"
+  cfn-lint -r "$AWS_REGION" -- *.@(json|yml|yaml)
+  echo "done"
+else
+  echo "no files to lint"
+fi
